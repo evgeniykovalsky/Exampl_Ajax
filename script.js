@@ -1,75 +1,79 @@
 'use strict';
-
-// let select = document.querySelector('#cars'),
-//     output = document.querySelector('.output');
-
-// select.addEventListener('change', ()=> {
-//     const request = new XMLHttpRequest();
+// let myMasiv=[];
+// function creatСolor()
+// {
    
-//     request.addEventListener('readystatechange', (event) => {
+   
+
+
         
-//         if (request.readyState === 4 && request.status === 200) {
-            
-//             const data = JSON.parse(request.responseText);
-            
-//             data.cars.forEach(item => {
-//                 if(item.brand === select.value) {
-//                     output.innerHTML = 'Model: ' + item.model + '<br> Price: '+ item.price;
-//                 }
-//             });
-//         }
-//     });
-    
-//     request.open('GET', './cars.json');
-    
-//     request.setRequestHeader('Content-type','application/json');
-//     request.send();
-// });
+//         let a=Math.floor(Math.random() * 255);
+//         let b=Math.floor(Math.random() * 255);
+//         let c=Math.floor(Math.random() * 255);
+//         return `rgb(${a}, ${b}, ${c})`;
+        
+// }
 
-const sendForm=()=>{
-let form=document.querySelector('form'),
-     user=form.querySelector('[type=text]'),
-     email=form.querySelector('[type=mail]'),
-     mesDiv=document.querySelector('.message');
-     let massage={
-         'success':'Ващі дані успішно відправлені',
-         'warning': 'Дані відправляються',
-         'error': 'Помилка відправленних данних'
-     }
-     form.addEventListener('submit',(event)=>{
-         event.preventDefault();
-         const requst=new XMLHttpRequest();
-         requst.addEventListener('readystatechange',()=>{
-               mesDiv.classList.add('warning');
-               mesDiv.innerHTML=massage.warning;
-
-               if(requst.readyState!=4){
-                   return;
-               }
-               if(requst.status===200){
-                   mesDiv.classList.remove('warning');
-                   mesDiv.classList.add('succses');
-                   mesDiv.innerHTML=massage.success;
-               }
-               else{
-                mesDiv.classList.remove('warning');
-                mesDiv.classList.add('error');
-                mesDiv.innerHTML=massage.error;
-               }
-
-
-
-
-         });
-         requst.open('POST','./send.php');
-         requst.setRequestHeader('Content-type','application/json');
-         const data={};
-         data.user=user.ariaValueMax;
-         data.email=email.value;
-         const body=JSON.stringify(data);
-
-
-     })
-}
-sendForm();
+// function creatMasiv(n)
+// {
    
+//     let maxLength=n;
+
+//    do{
+        
+//         let a=Math.floor(Math.random() * 16);
+//          if(!myMasiv.includes(a)){
+//             myMasiv.push(a);
+            
+//          }
+
+       
+//     }while(myMasiv.length<16)
+//     console.log(myMasiv);
+// }
+// creatMasiv(16);
+
+// function shafle(){
+// let ul=document.querySelector('ul');
+//     let li=ul.querySelectorAll('li');
+//     let i=0;
+//    li.forEach(elem=>{
+     
+//        elem.style.order=myMasiv[i];
+//        elem.style.backgroundColor=creatСolor();
+//        i++;
+//    })
+// }
+// shafle();
+let url='https://jsonplaceholder.typicode.com/posts';
+
+const sendPost=()=>{
+    const request=new XMLHttpRequest();
+    request.addEventListener('readystatechange',()=>{
+        if(request.readyState!==4){
+            return;
+        }
+        if(request.status===200){
+            let data=JSON.parse(request.responseText);
+            createWrap(data);
+               
+        }
+    });
+    request.open('GET',url);
+    request.setRequestHeader('Content-type','application/json');
+    request.send();
+}
+const createWrap=(data)=>{
+    data.forEach(item => {
+        if(item.userId==1){
+        let str=`<div class="col-12 col-md-6">
+        <div class="wrap"> <h2> ${item.title} </h2>
+        <p>  ${item.body}</p>
+        </div>
+        </div>`;
+        document.querySelector('.row').insertAdjacentHTML('beforeend',str);
+        }
+        
+    });
+}
+sendPost();
