@@ -47,22 +47,22 @@
 // shafle();
 let url='https://jsonplaceholder.typicode.com/posts';
 
-const sendPost=()=>{
-    const request=new XMLHttpRequest();
-    request.addEventListener('readystatechange',()=>{
-        if(request.readyState!==4){
-            return;
-        }
-        if(request.status===200){
-            let data=JSON.parse(request.responseText);
-            createWrap(data);
+// const sendPost=()=>{
+//     const request=new XMLHttpRequest();
+//     request.addEventListener('readystatechange',()=>{
+//         if(request.readyState!==4){
+//             return;
+//         }
+//         if(request.status===200){
+//             let data=JSON.parse(request.responseText);
+//             createWrap(data);
                
-        }
-    });
-    request.open('GET',url);
-    request.setRequestHeader('Content-type','application/json');
-    request.send();
-}
+//         }
+//     });
+//     request.open('GET',url);
+//     request.setRequestHeader('Content-type','application/json');
+//     request.send();
+// }
 const createWrap=(data)=>{
     data.forEach(item => {
         if(item.userId==1){
@@ -76,4 +76,29 @@ const createWrap=(data)=>{
         
     });
 }
-sendPost();
+// sendPost();
+
+const sendPost=()=>{
+       
+   return new Promise((resolve,reject)=>{
+       const request=new XMLHttpRequest();
+    request.addEventListener('readystatechange',()=>{
+        if(request.readyState!==4){
+            return;
+        }
+        if(request.status===200){
+            let data=JSON.parse(request.responseText);
+           resolve(data);
+               
+        }
+        else{
+            reject('Беда печаль: Ошибка получения');
+        }
+    });
+       request.open('GET',url);
+       request.setRequestHeader('Content-type','application/json');
+       request.send();
+   });
+   
+}
+sendPost().then((data)=>{createWrap(data)}).catch((error)=>{console.error(error)});
